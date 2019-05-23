@@ -6,10 +6,20 @@ organization := "com.orrsella"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
-scalacOptions ++= Seq("-feature")
+libraryDependencies += "commons-io" % "commons-io" % "2.6"
+
+libraryDependencies += "org.apache.tika" % "tika-core" % "1.21"
+
+// libraryDependencies += "org.apache.tika" % "tika-parsers" % "1.21"
+
+
+retrieveManaged := true
+scalaVersion := "2.12.6"
+
+scalacOptions ++= Seq("-feature", "-language:implicitConversions" )
 
 // publishing
-crossSbtVersions := Vector("0.13.16", "1.0.1")
+// crossSbtVersions := Vector("0.13.16", "1.0.1")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"

@@ -22,7 +22,10 @@ abstract class AnalyzerResult {
   def title: String
   def metrics: Seq[AnalyzerMetric]
 
-  override def toString = title + "\n- " + metrics.mkString("\n- ") + "\n"
+  private lazy val orderedMetrics = metrics.sortBy { m => m.value }.reverse
+
+  override def toString = title + "\n- " + orderedMetrics.mkString("\n- ") + "\n"
+
   private implicit def anyToString(x: Any) = x.toString
 
   def +(that: AnalyzerResult): AnalyzerResult = {

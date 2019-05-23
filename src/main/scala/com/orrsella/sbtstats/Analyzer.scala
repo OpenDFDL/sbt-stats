@@ -19,5 +19,5 @@ package com.orrsella.sbtstats
 import java.io.File
 
 abstract class Analyzer {
-  def analyze(sources: Seq[File], packageBin: File, encoding: String): AnalyzerResult
+  def analyze(title: String, sources: Seq[File], packageBin: File, encoding: String): AnalyzerResult
 }

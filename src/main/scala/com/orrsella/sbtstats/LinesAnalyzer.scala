@@ -20,10 +20,10 @@ import java.io.File
 import scala.io.Source
 
 class LinesAnalyzer extends Analyzer {
-  def analyze(sources: Seq[File], packageBin: File, encoding: String) = {
+  def analyze(title: String, sources: Seq[File], packageBin: File, encoding: String) = {
     val lines: Seq[Line] = for {
       file <- sources
-      line <- Source.fromFile(file, encoding).getLines
+      line <- Source.fromFile(file, "iso-8859-1").getLines
     } yield new Line(line)
 
     val totalLines = lines.length
@@ -33,19 +33,21 @@ class LinesAnalyzer extends Analyzer {
     val blankLines = lines.filter(_.isBlank).length
     //val avgLength = lines.filter(_.isCode).map(_.length).foldLeft(0)(_ + _) / totalLines // check that totalLines is not 0
 
-    new LinesAnalyzerResult(totalLines, codeLines, commentLines, bracketLines, blankLines)
+    new LinesAnalyzerResult(title, totalLines, codeLines, commentLines, bracketLines, blankLines)
   }
 }
 
 class LinesAnalyzerResult(
-    totalLines: Int,
-    codeLines: Int,
-    commentLines: Int,
-    bracketLines: Int,
-    blankLines: Int)
+  titleArg: String,
+  totalLines: Int,
+  codeLines: Int,
+  commentLines: Int,
+  bracketLines: Int,
+  blankLines: Int)
   extends AnalyzerResult {
 
-  val title = "Lines"
+  override val title = "Lines " + titleArg
+
   val metrics =
     Seq(
       new AnalyzerMetric("Total:     ", totalLines, "lines"),
@@ -53,5 +55,5 @@ class LinesAnalyzerResult(
       new AnalyzerMetric("Comment:   ", commentLines, totalLines, "lines"),
       new AnalyzerMetric("Blank:     ", blankLines, totalLines, "lines"),
       new AnalyzerMetric("Bracket:   ", bracketLines, totalLines, "lines"))
-      // new AnalyzerMetric("Avg length:", avgLength, "characters (code lines only, not inc spaces)"))
+  // new AnalyzerMetric("Avg length:", avgLength, "characters (code lines only, not inc spaces)"))
 }
